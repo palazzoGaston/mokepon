@@ -2,7 +2,7 @@ let labelHipodoge;
 let labelCapipepo;
 let labelRatigueya;
 
-let botonMascotaJugador = document.getElementById("boton-mascota");
+let btnSeleccionarMascota = document.getElementById("boton-mascota");
 let botonFuego = document.getElementById("boton-fuego");
 let botonAgua = document.getElementById("boton-agua");
 let botonTierra = document.getElementById("boton-tierra");
@@ -24,7 +24,7 @@ let ataquesDelEnemigo = document.getElementById("ataques-de-enemigo");
 let efectividadDeAtaqueJugador = document.getElementById("efectividad-de-ataque-jugador");
 let efectividadDeAtaqueEnemigo = document.getElementById("efectividad-de-ataque-enemigo");
 
-let btnSeleccionarMascota = document.getElementById("seleccionar-mascota");
+let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota");
 let titleSeleccionarAtaque = document.getElementById("subtitulo-seleccionar-ataque");
 let seleccionarAtaque = document.getElementById("seleccionar-ataque");
 
@@ -102,8 +102,8 @@ function iniciarJuego() {
 
     tarjetas = document.querySelectorAll(".tarjeta-de-mokepon");
 
+    mostrarBotonSeleccionarMascota();
     addEventListeners();
-    ocultarBotonReiniciar();
 }
 
 function capitalizeFirstLetter(string) {
@@ -121,7 +121,7 @@ function addEventListeners() {
     labelCapipepo.addEventListener("click", _ => seleccionarTarjetaDeMokepon(labelCapipepo));
     labelRatigueya.addEventListener("click", _ => seleccionarTarjetaDeMokepon(labelRatigueya));
 
-    botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador);
+    btnSeleccionarMascota.addEventListener("click", seleccionarMascotaJugador);
     botonFuego.addEventListener("click", ataqueFuego);
     botonAgua.addEventListener("click", ataqueAgua);
     botonTierra.addEventListener("click", ataqueTierra);
@@ -308,11 +308,11 @@ function mostrarBotonReiniciar() {
 }
 
 function ocultarSeleccionMascota() {
-    btnSeleccionarMascota.style.display = "none";
+    sectionSeleccionarMascota.style.display = "none";
 }
 
 function mostrarSeleccionMascota() {
-    btnSeleccionarMascota.style.display = "flex";
+    sectionSeleccionarMascota.style.display = "flex";
 }
 
 function ocultarSubtituloSeleccionarAtaque() {
@@ -350,6 +350,10 @@ function seleccionarTarjetaDeMokepon(tarjeta) {
     tarjeta.classList.remove("no-seleccionada");
 
     idMascotaSeleccionada = tarjeta.htmlFor;
+}
+
+function mostrarBotonSeleccionarMascota() {
+    btnSeleccionarMascota.style.display = "flex";
 }
 
 window.addEventListener("load", iniciarJuego);
