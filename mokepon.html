@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mokepon!</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+    <body>
+        <section id="seleccionar-mascota">
+            <H1 class="titulo">Mokepon</H1>
+
+            <h2 class="subtitulo">Elige tu mascota:</h2>
+
+            <div id="contenedor-de-tarjetas" class="tarjetas"></div>
+
+            <button id="boton-mascota">Seleccionar</button>
+
+            
+        </section>
+        
+        <section id="seleccionar-ataque">
+            <h1 class="titulo">Mokepon</h1>
+
+            <h2 class="subtitulo" id="subtitulo-seleccionar-ataque">Elige tu ataque:</h2>
+
+            <div id="contenedor-de-botones-de-ataques">
+                <button id="boton-fuego" class="boton-de-ataque">Fuego 🔥</button>
+                <button id="boton-agua" class="boton-de-ataque">Agua 💧</button>
+                <button id="boton-tierra" class="boton-de-ataque">Tierra 🌱</button>
+            </div>
+
+            <div id="mesajes">
+                <p id="resultado">Mucha Suerte</p>
+
+                <div id="reiniciar">
+                    <button id="boton-reiniciar" class="boton-de-reinicio">Reiniciar juego</button>
+                </div>
+            </div>
+
+            <div id="datos-de-combate">
+                <div id="datos-combate-jugador">
+                    <p id="vidas-jugador"></p>
+                    <p id="mascota-jugador"></p>
+                    <div id="ataques-de-jugador"></div>
+                    <div id="efectividad-de-ataque-jugador"></div>
+                </div>
+                <div id="datos-combate-enemigo">
+                    <p id="vidas-enemigo"></p>
+                    <p id="mascota-enemigo"></p>
+                    <div id="ataques-de-enemigo"></div>
+                    <div id="efectividad-de-ataque-enemigo"></div>
+                </div>
+            </div>
+        </section>
+
+        <script src="./js/mokepon.js"></script>
+    </body>
+</html>
