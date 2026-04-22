@@ -148,6 +148,7 @@ input[type="radio"] {
     justify-content: center;
     align-items: center;
     margin: 20px auto 20px auto;
+    display: none;
 }
 
 .boton-de-reinicio:hover {
@@ -223,9 +224,7 @@ input[type="radio"] {
     font-weight: bold;
 }
 
-#boton-fuego,
-#boton-agua,
-#boton-tierra {
+.boton-de-ataque {
     border: 2px solid white;
 }
 
@@ -255,5 +254,9 @@ input[type="radio"] {
 @media (max-width: 640px) {
     .tarjetas {
         flex-direction: column;
+    }
+
+    #datos-de-combate {
+        scale: 0.75;
     }
 }
