@@ -1,3 +1,5 @@
+const TiposDeAtaques = ["Agua", "Fuego", "Tierra"];
+
 let labelHipodoge;
 let labelCapipepo;
 let labelRatigueya;
@@ -33,9 +35,10 @@ let efectividadJugadorIcono;
 let efectividadEnemigoIcono;
 
 let mokepones = [];
+let ataqueJugador = [];
+let ataqueEnemigo = [];
 let ataquesMokeponJugador = [];
-let ataqueJugador;
-let ataqueEnemigo;
+let ataquesMokeponEnemigo = [];
 let opcionDemokepones;
 let opcionDeAtaques;
 let vidasActualesJugador;
@@ -48,6 +51,7 @@ let addSpace = 'margin-right: 4px;';
 let idMascotaSeleccionada = "";
 let mokeponSeleccionado;
 let mokeponEnemigoSeleccionado;
+let botonesDeAtaque = [];
 
 class Mokepon {
     ataques = [];
@@ -143,8 +147,7 @@ function seleccionarMascotaJugador() {
         contenedorDeBotonesDeAtaques.innerHTML += opcionDeAtaques;
     });
     
-    let auxBotones = document.querySelectorAll(`#${contenedorDeBotonesDeAtaques.id} button`);
-    auxBotones.forEach(auxBoton => auxBoton.addEventListener("click", atacar.bind(this, auxBoton.innerHTML)));
+    botonesDeAtaque = document.querySelectorAll(`.boton-de-ataque`);
     
     spanMascotaJugador.innerHTML = capitalizeFirstLetter(idMascotaSeleccionada);
 
@@ -156,6 +159,16 @@ function seleccionarMascotaJugador() {
     seleccionarMascotaEnemigo();
 }
 
+function secuenciaDeAtaque() {
+    botonesDeAtaque.forEach(auxBoton => auxBoton.addEventListener("click", (e) => {
+        ataqueJugador.push(e.target.textContent);
+        console.log(ataqueJugador);
+        auxBoton.style.background = "#112f58";
+        
+        ataqueAleatorioEnemigo();
+    }));
+}
+
 function seleccionarMascotaEnemigo() {
     let mascotaAleatoria = aleatorio(0, mokepones.length-1);
     
@@ -164,33 +177,36 @@ function seleccionarMascotaEnemigo() {
 
     vidasActualesEnemigo = mokeponEnemigoSeleccionado.vida;
     vidasEnemigo.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesEnemigo);
+
+    ataquesMokeponEnemigo = mokeponEnemigoSeleccionado.ataques;
+
+    secuenciaDeAtaque();
 }
 
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function atacar(tipoDeAtaque) {
-    ataqueJugador = tipoDeAtaque;
-    ataqueAleatorioEnemigo();
-}
-
 function ataqueAleatorioEnemigo() {
-    let ataqueAleatorio = aleatorio(1, 3);
+    let ataqueAleatorio = aleatorio(0, ataquesMokeponEnemigo.length-1);
 
     switch (ataqueAleatorio) {
+        case 0:
         case 1:
-            ataqueEnemigo = "Fuego";
-            break;
-        case 2:
-            ataqueEnemigo = "Agua";
+            ataqueEnemigo.push("Fuego");
             break;
         case 3:
-            ataqueEnemigo = "Tierra";
+        case 4:
+            ataqueEnemigo.push("Agua");
+            break;
+        case 2:
+            ataqueEnemigo.push("Tierra");
             break;
         default:
             break;
     }
+
+    console.log(ataqueEnemigo);
 
     combate();
 }
