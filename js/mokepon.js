@@ -53,6 +53,9 @@ let mokeponSeleccionado;
 let mokeponEnemigoSeleccionado;
 let botonesDeAtaque = [];
 
+let indexAtaqueJugador;
+let indexAtaqueEnemigo;
+
 class Mokepon {
     ataques = [];
 
@@ -208,26 +211,44 @@ function ataqueAleatorioEnemigo() {
 
     console.log(ataqueEnemigo);
 
-    combate();
+    iniciarPelea()
+}
+
+function iniciarPelea() {
+    if (ataqueJugador.length == 5) combate()
+}
+
+function indexAmbosOponentes(jugador, enemigo) {
+    indexAtaqueJugador = ataqueJugador[jugador];
+    indexAtaqueEnemigo = ataqueEnemigo[enemigo]
+}
+
+function esEfectivo(efctJugador, efctEnemigo) {
+    return 
+        (efctJugador == "Fuego" && efctEnemigo == "Tierra") ||
+        (efctJugador == "Agua" && efctEnemigo == "Fuego") ||
+        (efctJugador == "Tierra" && efctEnemigo == "Agua")
 }
 
 function combate() {
-    if (ataqueJugador == ataqueEnemigo) {
-        crearMensajeCombate("EMPATE");
-    } else if (
-        (ataqueJugador == "Fuego" && ataqueEnemigo == "Tierra") ||
-        (ataqueJugador == "Agua" && ataqueEnemigo == "Fuego") ||
-        (ataqueJugador == "Tierra" && ataqueEnemigo == "Agua")
-    ) {
-        crearMensajeCombate("GANASTE");
-        vidasActualesEnemigo--;
-        vidasEnemigo.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesEnemigo) + 
-                                 `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponEnemigoSeleccionado.vida - vidasActualesEnemigo);
-    } else {
-        crearMensajeCombate("PERDISTE");
-        vidasActualesJugador--;
-        vidasJugador.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesJugador) + 
-                                 `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponSeleccionado.vida - vidasActualesJugador);
+    for (let i = 0; i < ataqueJugador.length; i++) {
+        indexAmbosOponentes(i, i);
+        
+        if (ataqueJugador[i] == ataqueEnemigo[i]) {
+            crearMensajeCombate("EMPATE");
+        }
+        else if (esEfectivo(ataqueJugador[i], ataqueEnemigo[i])) {
+            crearMensajeCombate("GANASTE");
+            vidasActualesEnemigo--;
+            vidasEnemigo.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesEnemigo) + 
+                                    `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponEnemigoSeleccionado.vida - vidasActualesEnemigo);
+        }
+        else {
+            crearMensajeCombate("PERDISTE");
+            vidasActualesJugador--;
+            vidasJugador.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesJugador) + 
+                                    `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponSeleccionado.vida - vidasActualesJugador);
+            }
     }
 
     revisarVidas();
@@ -265,10 +286,10 @@ function crearMensajeCombate(resultadoDeAtaque) {
         auxResultShadowColor = auxPlayerShadowColor = auxEnemyShadowColor = "0 0 0 black";
     }
 
-    nuevoAtaqueDelJugador.innerHTML = ataqueJugador;
+    nuevoAtaqueDelJugador.innerHTML = indexAtaqueJugador;
     ataquesDelJugador.prepend(nuevoAtaqueDelJugador);
     
-    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo;
+    nuevoAtaqueDelEnemigo.innerHTML = indexAtaqueEnemigo;
     ataquesDelEnemigo.prepend(nuevoAtaqueDelEnemigo);
 
     resultadoDeCombate.innerHTML = resultadoDeAtaque;
