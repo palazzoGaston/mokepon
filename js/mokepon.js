@@ -41,12 +41,8 @@ let ataquesMokeponJugador = [];
 let ataquesMokeponEnemigo = [];
 let opcionDemokepones;
 let opcionDeAtaques;
-let vidasActualesJugador;
-let vidasActualesEnemigo;
-
-let heartIcon = "❤️";
-let heartLoseStyle = 'color: transparent; text-shadow: 0 0 0 #A9A9A9; filter: blur(0.5px) drop-shadow(1px 1px 1px #555);';
-let addSpace = 'margin-right: 4px;';
+let victoriasJugador = 0;
+let victoriasEnemigo = 0;
 
 let idMascotaSeleccionada = "";
 let mokeponSeleccionado;
@@ -154,8 +150,7 @@ function seleccionarMascotaJugador() {
     
     spanMascotaJugador.innerHTML = capitalizeFirstLetter(idMascotaSeleccionada);
 
-    vidasActualesJugador = mokeponSeleccionado.vida;
-    vidasJugador.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesJugador); 
+    vidasJugador.innerHTML = `<span>${victoriasJugador}</span>`; 
 
     ocultarSeleccionMascota();
     mostrarSeleccionDeAtaques();
@@ -178,8 +173,7 @@ function seleccionarMascotaEnemigo() {
     mokeponEnemigoSeleccionado = mokepones[mascotaAleatoria];
     spanMascotaEnemigo.innerHTML = capitalizeFirstLetter(mokeponEnemigoSeleccionado.nombre);
 
-    vidasActualesEnemigo = mokeponEnemigoSeleccionado.vida;
-    vidasEnemigo.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesEnemigo);
+    vidasEnemigo.innerHTML = `<span>${victoriasEnemigo}</span>`;
 
     ataquesMokeponEnemigo = mokeponEnemigoSeleccionado.ataques;
 
@@ -224,42 +218,45 @@ function indexAmbosOponentes(jugador, enemigo) {
 }
 
 function esEfectivo(efctJugador, efctEnemigo) {
-    return 
-        (efctJugador == "Fuego" && efctEnemigo == "Tierra") ||
-        (efctJugador == "Agua" && efctEnemigo == "Fuego") ||
-        (efctJugador == "Tierra" && efctEnemigo == "Agua")
+    let rtn = false;
+
+    // casos de victoria
+    if (efctJugador == "Fuego" && efctEnemigo == "Tierra") rtn = true;
+    if (efctJugador == "Agua" && efctEnemigo == "Fuego") rtn = true;
+    if (efctJugador == "Tierra" && efctEnemigo == "Agua") rtn = true;
+
+    return rtn
 }
 
 function combate() {
     for (let i = 0; i < ataqueJugador.length; i++) {
-        indexAmbosOponentes(i, i);
-        
         if (ataqueJugador[i] == ataqueEnemigo[i]) {
+            indexAmbosOponentes(i, i);
             crearMensajeCombate("EMPATE");
-        }
-        else if (esEfectivo(ataqueJugador[i], ataqueEnemigo[i])) {
-            crearMensajeCombate("GANASTE");
-            vidasActualesEnemigo--;
-            vidasEnemigo.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesEnemigo) + 
-                                    `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponEnemigoSeleccionado.vida - vidasActualesEnemigo);
-        }
-        else {
-            crearMensajeCombate("PERDISTE");
-            vidasActualesJugador--;
-            vidasJugador.innerHTML = `<span style="${addSpace}">${heartIcon}</span>`.repeat(vidasActualesJugador) + 
-                                    `<span style="${heartLoseStyle} ${addSpace}">${heartIcon}</span>`.repeat(mokeponSeleccionado.vida - vidasActualesJugador);
+        } else { 
+            if (esEfectivo(ataqueJugador[i], ataqueEnemigo[i])) {
+                // gana jugador
+                indexAmbosOponentes(i, i);
+                crearMensajeCombate("GANASTE");
+                victoriasJugador++;
+                vidasJugador.innerHTML = victoriasJugador;
             }
+            else {
+                // gana enemigo
+                indexAmbosOponentes(i, i);
+                crearMensajeCombate("PERDISTE");
+                victoriasEnemigo++;
+                vidasEnemigo.innerHTML = victoriasEnemigo;
+            }
+        }
     }
 
-    revisarVidas();
+    revisarVidas(victoriasJugador > victoriasEnemigo);
 }
 
-function revisarVidas() {
-    if (vidasActualesEnemigo == 0) {
-        mostrarPantallaFinal(1);
-    } else if (vidasActualesJugador == 0) {
-        mostrarPantallaFinal(0);
-    }
+function revisarVidas(esGanador) {
+    if (esGanador) mostrarPantallaFinal(1);
+    else mostrarPantallaFinal(0);
 }
 
 function crearMensajeCombate(resultadoDeAtaque) {
