@@ -163,6 +163,10 @@ function secuenciaDeAtaque() {
         console.log(ataqueJugador);
         auxBoton.style.background = "#112f58";
         
+        // dehabilitar interactivadad una vez seleccionado el ataque
+        auxBoton.disabled = "true";
+        auxBoton.style.pointerEvents = "none";
+        
         ataqueAleatorioEnemigo();
     }));
 }
