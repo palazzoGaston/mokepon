@@ -251,12 +251,7 @@ function combate() {
         }
     }
 
-    revisarVidas(victoriasJugador > victoriasEnemigo);
-}
-
-function revisarVidas(esGanador) {
-    if (esGanador) mostrarPantallaFinal(1);
-    else mostrarPantallaFinal(0);
+    mostrarPantallaFinal(victoriasJugador > victoriasEnemigo ? 1 : victoriasEnemigo > victoriasJugador ? -1 : 0);
 }
 
 function crearMensajeCombate(resultadoDeAtaque) {
@@ -308,14 +303,24 @@ function reiniciarJuego() {
     window.location.reload();
 }
 
-function mostrarPantallaFinal(esGanador) {
+function mostrarPantallaFinal(resFinal) {
     // ocultar botones de ataque y subtitulo seleccionar ataque
     ocultarBotonesDeAtaques();
     ocultarSubtituloSeleccionarAtaque();
 
     // mostrar resultado final
-    if (esGanador == 1) resultadoDeCombate.innerHTML = "¡Felicidades! Has ganado el juego.";
-    else resultadoDeCombate.innerHTML = "Lo siento, has perdido el juego.";
+    if (resFinal == 1) {
+        resultadoDeCombate.style.textShadow = "0 0 0 green";
+        resultadoDeCombate.innerHTML = "¡Felicidades! Has ganado el juego.";
+    }
+    else if (resFinal == -1) {
+        resultadoDeCombate.style.textShadow = "0 0 0 red";
+        resultadoDeCombate.innerHTML = "Lo siento, has perdido el juego.";
+    }
+    else {
+        resultadoDeCombate.style.textShadow = "0 0 0 black";
+        resultadoDeCombate.innerHTML = "Has empatado el juego.";
+    }
 
     mostrarBotonReiniciar();
 }
