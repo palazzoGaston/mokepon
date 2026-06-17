@@ -65,24 +65,40 @@ mapaBackground.src = "./assets/mokemap.png";
 class Mokepon {
     ataques = [];
 
-    constructor(nombre, imgSrc, vida) {
+    constructor(nombre, imgSrc, vida, fotoMapa, x=20, y=30) {
         this.nombre = nombre;
         this.imgSrc = imgSrc;
         this.vida = vida;
-        this.x = 20;
-        this.y = 30;
-        this.ancho = 80;
-        this.alto = 80;
+        this.x = x;
+        this.y = y;
+        this.ancho = 40;
+        this.alto = 40;
         this.mapaFoto = new Image();
-        this.mapaFoto.src = imgSrc;
+        this.mapaFoto.src = fotoMapa;
         this.velocidadX = 0;
         this.velocidadY = 0;
     }
+
+    pintarMokepon(){ 
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
+    }
 }
 
-let hipodoge = new Mokepon("hipodoge", "/assets/mokepons_mokepon_hipodoge_attack.png", 5);
-let ratigueya = new Mokepon("ratigueya", "/assets/mokepons_mokepon_ratigueya_attack.png", 5);
-let capipepo = new Mokepon("capipepo", "/assets/mokepons_mokepon_capipepo_attack.png", 5);
+// mokepones enemigos
+let hipodogeEnemigo = new Mokepon("hipodoge", "/assets/mokepons_mokepon_hipodoge_attack.png", 5, "/assets/hipodoge.png", 80, 20);
+let ratigueyaEnemigo = new Mokepon("ratigueya", "/assets/mokepons_mokepon_ratigueya_attack.png", 5, "/assets/ratigueya.png", 150, 95);
+let capipepoEnemigo = new Mokepon("capipepo", "/assets/mokepons_mokepon_capipepo_attack.png", 5, "/assets/capipepo.png", 200, 190);
+
+// mokepones aliados
+let hipodoge = new Mokepon("hipodoge", "/assets/mokepons_mokepon_hipodoge_attack.png", 5, "/assets/hipodoge.png");
+let ratigueya = new Mokepon("ratigueya", "/assets/mokepons_mokepon_ratigueya_attack.png", 5, "/assets/ratigueya.png");
+let capipepo = new Mokepon("capipepo", "/assets/mokepons_mokepon_capipepo_attack.png", 5, "/assets/capipepo.png");
 
 hipodoge.ataques.push(
     {nombre: "Agua", id: "boton-agua-1"},
@@ -443,14 +459,13 @@ function pintarCanvas() {
         mapa.height   
     );
 
-    // pintar personaje
-    lienzo.drawImage(
-        mascotaJugadorObjeto.mapaFoto,
-        mascotaJugadorObjeto.x,
-        mascotaJugadorObjeto.y,
-        mascotaJugadorObjeto.ancho,
-        mascotaJugadorObjeto.alto
-    );
+    // pintar personajes enemigos
+    hipodogeEnemigo.pintarMokepon();
+    capipepoEnemigo.pintarMokepon();
+    ratigueyaEnemigo.pintarMokepon();
+
+    // pintar personajes aliados
+    mascotaJugadorObjeto.pintarMokepon();
 }
 
 function moverIzquierda() {
