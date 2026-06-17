@@ -1,5 +1,8 @@
 const TiposDeAtaques = ["Agua", "Fuego", "Tierra"];
 
+const sectionVerMapa = document.getElementById("ver-mapa");
+const mapa = document.getElementById("mapa");
+
 let labelHipodoge;
 let labelCapipepo;
 let labelRatigueya;
@@ -52,6 +55,9 @@ let botonesDeAtaque = [];
 let indexAtaqueJugador;
 let indexAtaqueEnemigo;
 
+let lienzo = mapa.getContext("2d");
+let intervalo;
+
 class Mokepon {
     ataques = [];
 
@@ -59,6 +65,14 @@ class Mokepon {
         this.nombre = nombre;
         this.imgSrc = imgSrc;
         this.vida = vida;
+        this.x = 20;
+        this.y = 30;
+        this.ancho = 80;
+        this.alto = 80;
+        this.mapaFoto = new Image();
+        this.mapaFoto.src = imgSrc;
+        this.velocidadX = 0;
+        this.velocidadY = 0;
     }
 }
 
@@ -93,6 +107,8 @@ capipepo.ataques.push(
 mokepones.push(hipodoge, ratigueya, capipepo)
 
 function iniciarJuego() {
+    sectionVerMapa.style.display = "none";
+
     mokepones.forEach((mokepon, i) => {
         opcionDemokepones = `
         <input type="radio" name="mascota" id=${mokepon.nombre} />
@@ -153,7 +169,15 @@ function seleccionarMascotaJugador() {
     vidasJugador.innerHTML = `<span>${victoriasJugador}</span>`; 
 
     ocultarSeleccionMascota();
-    mostrarSeleccionDeAtaques();
+
+    // mostrarSeleccionDeAtaques();
+
+    sectionVerMapa.style.display = "flex";
+    intervalo = setInterval(pintarPersonaje, 50);
+
+    window.addEventListener('keydown', sePresionoUnaTecla);
+    window.addEventListener('keyup', detenerMovimiento);
+
     seleccionarMascotaEnemigo();
 }
 
@@ -400,6 +424,58 @@ function seleccionarTarjetaDeMokepon(tarjeta) {
 
 function mostrarBotonSeleccionarMascota() {
     btnSeleccionarMascota.style.display = "flex";
+}
+
+function pintarPersonaje() {
+    capipepo.x += capipepo.velocidadX;
+    capipepo.y += capipepo.velocidadY;
+    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.clientHeight);
+    lienzo.drawImage(
+        capipepo.mapaFoto,
+        capipepo.x,
+        capipepo.y,
+        capipepo.ancho,
+        capipepo.alto
+    );
+}
+
+function moverIzquierda() {
+    capipepo.velocidadX = -5;
+}
+function moverAbajo() {
+    capipepo.velocidadY = 5;
+}
+function moverDerecha() {
+    capipepo.velocidadX = 5;
+}
+function moverArriba() {
+    capipepo.velocidadY = -5;
+}
+
+function detenerMovimiento() {
+    capipepo.velocidadX = 0;
+    capipepo.velocidadY = 0;
+}
+
+function sePresionoUnaTecla(e) {
+    // console.log(e)
+    switch (e.key) {
+        case 'ArrowRight':
+            moverDerecha();
+            break;
+        case 'ArrowLeft':
+            moverIzquierda();
+            break;
+        case 'ArrowDown':
+            moverAbajo();
+            break;
+        case 'ArrowUp':
+            moverArriba();
+            break;
+        default:
+            console.log(`Tecla de movimiento invalida! → ${e.key === ' '? 'SpaceBar': e.key}`)
+            break;
+    }
 }
 
 window.addEventListener("load", iniciarJuego);
