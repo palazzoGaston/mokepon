@@ -466,6 +466,13 @@ function pintarCanvas() {
 
     // pintar personajes aliados
     mascotaJugadorObjeto.pintarMokepon();
+
+    // revisar colision
+    if (mascotaJugadorObjeto.velocidadX != 0 || mascotaJugadorObjeto.velocidadY != 0) {
+        revisarColision(hipodogeEnemigo);
+        revisarColision(capipepoEnemigo);
+        revisarColision(ratigueyaEnemigo);
+    }
 }
 
 function moverIzquierda() {
@@ -502,7 +509,7 @@ function sePresionoUnaTecla(e) {
             moverArriba();
             break;
         default:
-            console.log(`Tecla de movimiento invalida! → ${e.key === ' '? 'SpaceBar': e.key}`)
+            // console.log(`Tecla de movimiento invalida! → ${e.key === ' '? 'SpaceBar': e.key}`)
             break;
     }
 }
@@ -521,6 +528,31 @@ function iniciarMapa() {
 
 function obtenerObjetoMascota() {
     return mokepones.find((mokepon) => mokepon.nombre == idMascotaSeleccionada);
+}
+
+function revisarColision(enemigo) {
+    const arribaEnemigo = enemigo.y;
+    const abajoEnemigo = enemigo.y + enemigo.alto;
+    const derechaEnemigo = enemigo.x + enemigo.ancho;
+    const izquierdaEnemigo = enemigo.x;
+
+    const arribaMascota = mascotaJugadorObjeto.y;
+    const abajoMascota = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto;
+    const derechaMascota = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho;
+    const izquierdaMascota = mascotaJugadorObjeto.x;
+
+    if (
+        abajoMascota < arribaEnemigo ||
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo
+    ) {
+        return
+    }
+
+    alert("Hay Colision")
+
+    detenerMovimiento();
 }
 
 window.addEventListener("load", iniciarJuego);
